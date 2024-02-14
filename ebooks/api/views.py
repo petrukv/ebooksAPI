@@ -2,15 +2,17 @@ from rest_framework import generics, mixins, permissions
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
 
+from ebooks.api.pagination import *
 from ebooks.api.permissions import *
 from ebooks.api.serializers import *
 from ebooks.models import *
 
 
 class EbookListCreateAPIView(generics.ListCreateAPIView):
-    queryset = Ebook.objects.all()
+    queryset = Ebook.objects.all().order_by('id')
     serializer_class = EbookSerializer
     permission_classes = [IsAdminUserOrReadOnly]
+    pagination_class = SmallSetPagination
 
 
 class EbookDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
